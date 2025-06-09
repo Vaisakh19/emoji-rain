@@ -1,6 +1,6 @@
 
 body {
-  font-family: sans-serif;
+  font-family: Nunito;
   text-align: center;
   background: 	#0f172a;
   margin: 0;
@@ -34,19 +34,33 @@ h1 {
   margin-top: 14px;
 }
 
-button {
+button{
   background-color:#3b82f6;
   border: none;
   padding: 10px 20px;
   font-size: 16px;
   border-radius: 8px;
   cursor: pointer;
+  color:white;
   transition: background 0.2s ease;
   font-weight: bold;
 }
-
+#muteBtn{
+    position:absolute;
+    top:16px;
+    right:16px;
+    border:none;
+    font-size:16px;
+    cursor:pointer;
+    color:white;
+    transition:background 0.2s ease;
+}
 button:hover {
   background-color:#2563eb;
+}
+
+button:active{
+    transform:scale(0.96);
 }
 
 #gameOverScreen {
@@ -54,15 +68,22 @@ button:hover {
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #ffffffee;
+  background: #1e293b;
+  color:#f8fafc;
   padding: 20px 40px;
   border: 2px solid black;
   border-radius: 10px;
   display: none;
   z-index: 10;
+  box-shadow: 0 4px 20px rgba;
+}
+
+.container{
+    max-width: 500px;
+    margin:auto;
 }
 h1{
-    color:	#60a5fa;
+    color:	white;
     font-weight: bold;
 }
 .hidden {
