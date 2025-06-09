@@ -5,16 +5,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Emoji Catcher Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Emoji Catcher</h1>
-
+<div class="container">
+    <h1>Emoji Catcher</h1>
+    <button id="muteBtn">Mute</button>
   <p id="score">Score: 0</p>
   <canvas id="gameCanvas" width="400" height="600"></canvas>
 
   <div id="controls">
     <button id="restartBtn">Restart</button>
+    
   </div>
 
   <div id="gameOverScreen" class="hidden">
@@ -23,6 +27,7 @@
     <button onclick="restartGame()">Try Again</button>
   </div>
 
-  <script src="script.js"></script>
+ </div>
+  
 </body>
 </html>
