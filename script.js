@@ -1,13 +1,16 @@
 const canvas= document.getElementById('gameCanvas');
 const ctx=canvas.getContext('2d');// ctx used to draw on the canvas
-
+const emojis = ["🍕", "🍩", "😄", "🍔", "🍎", "🎯"];
+const emojiFalls=[];
+let score=0;
+let gameOver=false;
 let keys={
     left:false,
     right:false
 }
 
 const player={
-    width:100,
+    width:50,
     height:20,
     speed:5,
     color:'white',
@@ -15,7 +18,7 @@ const player={
     y:0
 }
 player.x=(canvas.width/2)-(player.width/2);
-player.y=(canvas.height-30);
+player.y=(canvas.height-player.height);
 
 //move the rectangle to either direction(set to true)
 window.addEventListener('keydown',(e)=>{ 
@@ -38,12 +41,13 @@ window.addEventListener('keyup',(e)=>{
 });
 
 function createPlayer(){
-    ctx.fillStyle=player.color;
-    ctx.fillRect(player.x, player.y, player.width, player.height);
+
+    ctx.font='40px serif';
+    ctx.fillText("🧺", player.x, player.y);
 }
 
 function updatePlayer(){
-    if(keys.left ){
+    if(keys.left){
         player.x -= player.speed;
         if(player.x < 0){
             player.x=0;
@@ -57,15 +61,73 @@ function updatePlayer(){
     }
 }
 
+function dropEmoji(){
+    const emoji={
+        char:emojis[Math.floor(Math.random()*emojis.length)],
+        x:Math.random()*(canvas.width-30),
+        y:-30,
+        size:30,
+        speed:2+Math.random()*2
+    };
+    emojiFalls.push(emoji);
+}
+setInterval(dropEmoji, 1000);
 
 function clearCanvas(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function updateEmojis(){
+    for(let emoji of emojiFalls){
+        emoji.y += emoji.speed;
+    }
+}
+
+function displayScore(){
+    document.getElementById('score').innerText=`Score: ${score}`;
+}
+
+function drawEmojis(){
+    ctx.font='30px serif';
+    for(let emoji of emojiFalls){
+        ctx.fillText(emoji.char, emoji.x, emoji.y);
+    }
+}
+
+function checkCollision(){
+    for(let i=emojiFalls.length-1;i>=0;i--){
+        const emoji= emojiFalls[i];
+        const caught=emoji.y + emoji.size>= player.y && 
+            emoji.x + emoji.size >= player.x &&
+            emoji.x <= player.x + player.width;
+        
+        if(caught){
+            emojiFalls.splice(i,1);
+            score++;
+        }
+        else if(emoji.y > canvas.height){
+            emojiFalls.splice(i,1);
+            gameOver=true;
+        } 
+    }
+}
 function gameLoop(){
-    clearCanvas();
+    if(gameOver){
+        gameOverScreen();
+        return;
+    }
+    console.log("Drawing player at: ", player.x, player.y);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
     updatePlayer();
     createPlayer();
+
+    updateEmojis();
+    drawEmojis();
+
+    checkCollision();
+    displayScore();
+
     requestAnimationFrame(gameLoop);
 }
 
