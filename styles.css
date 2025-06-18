@@ -89,3 +89,8 @@ h1{
 .hidden {
   display: none;
 }
+
+#gameCanvas{
+  background: #222;
+  border: 1px solid cyan;
+}
