@@ -67,7 +67,7 @@ function dropEmoji(){
         x:Math.random()*(canvas.width-30),
         y:-30,
         size:30,
-        speed:2+Math.random()*2
+        speed:2+Math.random()*1.5
     };
     emojiFalls.push(emoji);
 }
@@ -111,12 +111,51 @@ function checkCollision(){
         } 
     }
 }
+let dropInterval;
+
+function startGame(){
+    document.getElementById('controls').classList.add('hidden');
+    document.getElementById('gameOverScreen').classList.add('hidden');
+    document.getElementById('blurOverlay').style.display='none';
+    emojiFalls.length=0;
+    score=0;
+    gameOver=false;
+    player.x=(canvas.width/2)-(player.width/2);
+    if(dropInterval){
+        clearInterval(dropInterval);
+    }
+    dropInterval=setInterval(dropEmoji, 1000);
+    requestAnimationFrame(gameLoop);
+
+}
+
+function gameOverScreen(){
+    
+    const screen=document.getElementById('gameOverScreen');
+    screen.classList.remove('hidden');
+    document.getElementById('finalScore').innerText=score;
+    document.getElementById('blurOverlay').style.display='block';
+}
+
+function restartGame(){
+    emojiFalls.length=0;
+    score=0;
+    gameOver=false;
+    player.x=(canvas.width/2)-(player.width/2);
+    document.getElementById('gameOverScreen').classList.add('hidden');
+    document.getElementById('blurOverlay').style.display='none';
+    if(dropInterval){
+        clearInterval(dropInterval);
+    }
+    dropInterval=setInterval(dropEmoji, 1000);
+    requestAnimationFrame(gameLoop);
+}
 function gameLoop(){
     if(gameOver){
         gameOverScreen();
         return;
     }
-    console.log("Drawing player at: ", player.x, player.y);
+   
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     updatePlayer();
@@ -131,4 +170,4 @@ function gameLoop(){
     requestAnimationFrame(gameLoop);
 }
 
-gameLoop();
+//gameLoop();
