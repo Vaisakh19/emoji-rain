@@ -116,6 +116,7 @@ let dropInterval;
 function startGame(){
     document.getElementById('controls').classList.add('hidden');
     document.getElementById('gameOverScreen').classList.add('hidden');
+    document.getElementById('gameCanvas').classList.remove('blurred');
     document.getElementById('blurOverlay').style.display='none';
     emojiFalls.length=0;
     score=0;
@@ -134,7 +135,8 @@ function gameOverScreen(){
     const screen=document.getElementById('gameOverScreen');
     screen.classList.remove('hidden');
     document.getElementById('finalScore').innerText=score;
-    document.getElementById('blurOverlay').style.display='block';
+    document.getElementById('gameCanvas').classList.add('blurred');
+    document.getElementById('blurOverlay').style.display='none';
 }
 
 function restartGame(){
@@ -143,6 +145,7 @@ function restartGame(){
     gameOver=false;
     player.x=(canvas.width/2)-(player.width/2);
     document.getElementById('gameOverScreen').classList.add('hidden');
+    document.getElementById('gameCanvas').classList.remove('blurred');
     document.getElementById('blurOverlay').style.display='none';
     if(dropInterval){
         clearInterval(dropInterval);

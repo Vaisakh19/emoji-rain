@@ -49,9 +49,9 @@ h1 {
 }
 
 
-#blurOverlay.hidden {
+/* #blurOverlay.hidden {
   display: none;
-}
+} */
 
 #controls {
   margin-top: 14px;
