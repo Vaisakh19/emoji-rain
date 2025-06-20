@@ -2,6 +2,7 @@ const canvas= document.getElementById('gameCanvas');
 const ctx=canvas.getContext('2d');// ctx used to draw on the canvas
 const emojis = ["🍕", "🍩", "😄", "🍔", "🍎", "🎯"];
 const emojiFalls=[];
+let targetEmoji="";
 let score=0;
 let gameOver=false;
 let keys={
@@ -41,7 +42,6 @@ window.addEventListener('keyup',(e)=>{
 });
 
 function createPlayer(){
-
     ctx.font='40px serif';
     ctx.fillText("🧺", player.x, player.y);
 }
@@ -67,7 +67,7 @@ function dropEmoji(){
         x:Math.random()*(canvas.width-30),
         y:-30,
         size:30,
-        speed:2+Math.random()*1.5
+        speed:2+score*0.05,
     };
     emojiFalls.push(emoji);
 }
@@ -97,20 +97,42 @@ function drawEmojis(){
 function checkCollision(){
     for(let i=emojiFalls.length-1;i>=0;i--){
         const emoji= emojiFalls[i];
-        const caught=emoji.y + emoji.size>= player.y && 
+        
+        // First, check if emoji fell off the bottom of the screen
+        if(emoji.y > canvas.height + 50){
+            if(emoji.char === targetEmoji){
+                // Missed the target emoji - game over
+                gameOver = true;
+                return;
+            } else {
+                // Non-target emoji fell off - just remove it
+                emojiFalls.splice(i, 1);
+            }
+            continue; // Skip to next emoji, don't check collision
+        }
+        
+        // Check for collision with player basket
+        const caught = emoji.y + emoji.size >= player.y && 
+            emoji.y <= player.y + player.height &&
             emoji.x + emoji.size >= player.x &&
             emoji.x <= player.x + player.width;
         
         if(caught){
-            emojiFalls.splice(i,1);
-            score++;
+            if(emoji.char === targetEmoji){
+                // Caught the correct emoji
+                score++;
+                emojiFalls.splice(i, 1);
+                targetEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                document.getElementById('targetEmoji').innerText = `Catch: ${targetEmoji}`;
+            } else {
+                // Caught wrong emoji - game over
+                gameOver = true;
+                return;
+            }
         }
-        else if(emoji.y > canvas.height){
-            emojiFalls.splice(i,1);
-            gameOver=true;
-        } 
     }
 }
+
 let dropInterval;
 
 function startGame(){
@@ -122,16 +144,18 @@ function startGame(){
     score=0;
     gameOver=false;
     player.x=(canvas.width/2)-(player.width/2);
+
+    targetEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    document.getElementById('targetEmoji').innerText = `Catch: ${targetEmoji}`;
+
     if(dropInterval){
         clearInterval(dropInterval);
     }
     dropInterval=setInterval(dropEmoji, 1000);
     requestAnimationFrame(gameLoop);
-
 }
 
 function gameOverScreen(){
-    
     const screen=document.getElementById('gameOverScreen');
     screen.classList.remove('hidden');
     document.getElementById('finalScore').innerText=score;
@@ -153,6 +177,7 @@ function restartGame(){
     dropInterval=setInterval(dropEmoji, 1000);
     requestAnimationFrame(gameLoop);
 }
+
 function gameLoop(){
     if(gameOver){
         gameOverScreen();
@@ -172,5 +197,3 @@ function gameLoop(){
 
     requestAnimationFrame(gameLoop);
 }
-
-//gameLoop();
