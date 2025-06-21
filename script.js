@@ -67,7 +67,7 @@ function dropEmoji(){
         x:Math.random()*(canvas.width-30),
         y:-30,
         size:30,
-        speed:2+score*0.05,
+        speed:2+score*0.05, // Speed increases gradually with score during the game
     };
     emojiFalls.push(emoji);
 }
@@ -119,11 +119,10 @@ function checkCollision(){
         
         if(caught){
             if(emoji.char === targetEmoji){
-                // Caught the correct emoji
+                // Caught the correct emoji - keep same target, just increase score
                 score++;
                 emojiFalls.splice(i, 1);
-                targetEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-                document.getElementById('targetEmoji').innerText = `Catch: ${targetEmoji}`;
+                // Target emoji stays the same for the entire game
             } else {
                 // Caught wrong emoji - game over
                 gameOver = true;
@@ -141,7 +140,7 @@ function startGame(){
     document.getElementById('gameCanvas').classList.remove('blurred');
     document.getElementById('blurOverlay').style.display='none';
     emojiFalls.length=0;
-    score=0;
+    score=0; // Reset score - speed will start from base and increase gradually
     gameOver=false;
     player.x=(canvas.width/2)-(player.width/2);
 
@@ -164,8 +163,9 @@ function gameOverScreen(){
 }
 
 function restartGame(){
+    startGame();
     emojiFalls.length=0;
-    score=0;
+    score=0; // Reset score - speed will start from base again
     gameOver=false;
     player.x=(canvas.width/2)-(player.width/2);
     document.getElementById('gameOverScreen').classList.add('hidden');
