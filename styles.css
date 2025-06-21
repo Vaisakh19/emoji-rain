@@ -68,16 +68,7 @@ button{
   transition: background 0.2s ease;
   font-weight: bold;
 }
-#muteBtn{
-    position:absolute;
-    top:16px;
-    right:16px;
-    border:none;
-    font-size:16px;
-    cursor:pointer;
-    color:white;
-    transition:background 0.2s ease;
-}
+
 button:hover {
   background-color:#2563eb;
 }
