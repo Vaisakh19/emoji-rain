@@ -24,7 +24,7 @@ A fun, browser-based game where you control a basket to catch falling emojis! Ca
 - Smooth player movement with keyboard controls
 - Increasing difficulty with speed as score increases
 
-##Future Enhancements
+## Future Enhancements
 
 - Store scores using a local storage or backend
 - Switch between types of emoji
